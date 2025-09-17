@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/userModel.js";
+import User from "../models/user.js";
 
 // authentication
 export const protect = async (req, res, next) => {
@@ -41,9 +41,9 @@ export const authorize = (...roles) => {
     if (!req.user || !roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
-        message: `User role: '${
+        message: `${
           req.user ? req.user.role : "guest"
-        }' is not authorized to access this route`,
+        } is not authorized to access this route`,
       });
     }
     next();

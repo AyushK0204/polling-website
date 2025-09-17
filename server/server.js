@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import pollRoutes from "./routes/pollRoutes.js";
 
 // load .env
 dotenv.config();
@@ -23,7 +24,9 @@ app.use(cookieParser());
 app.get("/", (req, res, next) => {
   res.send("api working");
 });
+
 app.use("/api/users", userRoutes);
+app.use("/api/polls", pollRoutes);
 
 // port
 const PORT = process.env.PORT || 5000;

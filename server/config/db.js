@@ -5,7 +5,7 @@ const connectDB = async () => {
   mongoose.connection.on("connected", () => {
     console.log("Database connected");
   });
-  mongoose.connect(`${process.env.MONGODB_URI}/job-portal`);
+  mongoose.connect(`${process.env.MONGODB_URI}`);
 };
 
 export default connectDB;
