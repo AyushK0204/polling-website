@@ -1,5 +1,49 @@
 import Poll from "../models/poll.js";
 
+// get all polls that user voted
+export const getMyVotedPolls = async (req, res) => {
+  try {
+    const polls = await Poll.find({
+      votedBy: req.user.id,
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      count: polls.length,
+      polls,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// get all polls for admin dashboard
+export const getAdminPolls = async (req, res) => {
+  try {
+    const polls = await Poll.find({})
+      .sort({
+        createdAt: -1,
+      })
+      .populate("createdBy", "name");
+
+    res.status(200).json({
+      success: true,
+      count: polls.length,
+      polls,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 // create a poll
 export const createPoll = async (req, res) => {
   try {
@@ -14,7 +58,7 @@ export const createPoll = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      data: poll,
+      poll,
     });
   } catch (err) {
     res.status(400).json({
@@ -36,7 +80,7 @@ export const getPolls = async (req, res) => {
     res.status(200).json({
       success: true,
       count: polls.length,
-      data: polls,
+      polls,
     });
   } catch (err) {
     res.status(500).json({
@@ -63,7 +107,7 @@ export const getPoll = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: poll,
+      poll,
     });
   } catch (err) {
     res.status(500).json({
@@ -99,7 +143,7 @@ export const updatePoll = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: poll,
+      poll,
     });
   } catch (err) {
     res.status(400).json({
@@ -185,9 +229,12 @@ export const voteOnPoll = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Your vote has been recorded",
-      data: poll,
+      poll,
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 };

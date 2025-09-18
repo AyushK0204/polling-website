@@ -22,10 +22,7 @@ export const register = async (req, res, next) => {
       role,
     });
 
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully. Please log in.",
-    });
+    sendTokenResponse(user, 201, res);
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -64,4 +61,26 @@ export const login = async (req, res, next) => {
       message: "Server Error",
     });
   }
+};
+
+// get current logged in user
+export const getMe = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  res.status(200).json({
+    success: true,
+    user,
+  });
+};
+
+// logout a user
+export const logout = (req, res, next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
 };
