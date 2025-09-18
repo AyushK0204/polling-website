@@ -33,10 +33,13 @@ const CreatePoll = () => {
         return;
       }
 
+      // time conversion to UTC ISO string
+      const closesAtUTC = new Date(closesAt).toISOString();
+
       await api.post("/polls", {
         question,
         options,
-        closesAt,
+        closesAt: closesAtUTC,
       });
 
       navigate("/admin");
