@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 
 const AdminDashboard = () => {
   const [polls, setPolls] = useState([]);
@@ -9,7 +9,7 @@ const AdminDashboard = () => {
 
   const fetchPolls = async () => {
     try {
-      const { data } = await axios.get("/api/polls/admin");
+      const { data } = await api.get("/polls/admin");
       setPolls(data.polls);
     } catch (err) {
       setError("Could not fetch polls.");
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
   const handleDelete = async (pollId) => {
     if (window.confirm("Are you sure you want to delete this poll?")) {
       try {
-        await axios.delete(`/api/polls/${pollId}`);
+        await api.delete(`/polls/${pollId}`);
         fetchPolls();
       } catch (err) {
         alert("Failed to delete poll.");

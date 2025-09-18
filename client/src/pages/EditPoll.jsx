@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 
 const EditPoll = () => {
   const [question, setQuestion] = useState("");
@@ -15,7 +15,7 @@ const EditPoll = () => {
   useEffect(() => {
     const fetchPoll = async () => {
       try {
-        const { data } = await axios.get(`/api/polls/${id}`);
+        const { data } = await api.get(`/polls/${id}`);
         setQuestion(data.poll.question);
         setOptions(data.poll.options);
         const date = new Date(data.poll.closesAt);
@@ -56,7 +56,7 @@ const EditPoll = () => {
         return;
       }
 
-      await axios.put(`/api/polls/${id}`, {
+      await api.put(`/polls/${id}`, {
         question,
         options: validOptions,
         closesAt,

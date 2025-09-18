@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api";
 
 export const AppContext = createContext();
 
@@ -10,7 +10,7 @@ export const AppContextProvider = (props) => {
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        const { data } = await axios.get("/api/users/me");
+        const { data } = await api.get("/users/me");
         setUser(data.user);
       } catch (err) {
         setUser(null);
@@ -23,14 +23,14 @@ export const AppContextProvider = (props) => {
   }, []);
 
   const login = async (email, password) => {
-    const { data } = await axios.post("/api/users/login", { email, password });
+    const { data } = await api.post("/users/login", { email, password });
     if (data && data.user) {
       setUser(data.user);
     }
   };
 
   const register = async (name, email, password) => {
-    const { data } = await axios.post("/api/users/register", {
+    const { data } = await api.post("/users/register", {
       name,
       email,
       password,
@@ -42,7 +42,7 @@ export const AppContextProvider = (props) => {
   };
 
   const logout = async () => {
-    await axios.post("/api/users/logout");
+    await api.post("/users/logout");
     setUser(null);
   };
 

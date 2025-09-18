@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import api from "../api";
 import PollCard from "../components/PollCard";
 import { AppContext } from "../context/AppContext";
 
@@ -12,7 +12,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchPolls = async () => {
       try {
-        const { data } = await axios.get("/api/polls");
+        const { data } = await api.get("/polls");
         setPolls(data.polls);
       } catch (err) {
         setError("Could not fetch polls. Please try again later.");

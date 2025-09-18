@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 
 const CreatePoll = () => {
   const [question, setQuestion] = useState("");
@@ -33,7 +33,7 @@ const CreatePoll = () => {
         return;
       }
 
-      await axios.post("/api/polls", {
+      await api.post("/polls", {
         question,
         options,
         closesAt,

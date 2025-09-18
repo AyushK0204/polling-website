@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import { AppContext } from "../context/AppContext";
 import PollResults from "../components/PollResults";
 
@@ -13,14 +13,13 @@ const Poll = () => {
   const [error, setError] = useState(null);
   const [selectedOption, setSelectedOption] = useState("");
 
-  // Derived state to check if the current user has already voted
   const hasVoted = poll && user ? poll.votedBy.includes(user.id) : false;
   const isPollClosed = poll ? new Date() > new Date(poll.closesAt) : false;
 
   useEffect(() => {
     const fetchPoll = async () => {
       try {
-        const { data } = await axios.get(`/api/polls/${id}`);
+        const { data } = await api.get(`/polls/${id}`);
         setPoll(data.poll);
       } catch (err) {
         setError("Could not fetch the poll. It may not exist.");
@@ -40,11 +39,9 @@ const Poll = () => {
       return;
     }
     try {
-      // The backend uses the cookie to identify the user
-      const { data } = await axios.put(`/api/polls/${id}/vote`, {
+      const { data } = await api.put(`/polls/${id}/vote`, {
         optionId: selectedOption,
       });
-      // Update the local state with the new poll data from the server
       setPoll(data.poll);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to record vote.");
