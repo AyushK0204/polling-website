@@ -5,9 +5,11 @@ export const getMyVotedPolls = async (req, res) => {
   try {
     const polls = await Poll.find({
       votedBy: req.user.id,
-    }).sort({
-      createdAt: -1,
-    });
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("createdBy", "name");
 
     res.status(200).json({
       success: true,
