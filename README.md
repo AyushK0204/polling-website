@@ -73,7 +73,7 @@ This is a text representation of the database models and their relationship.
 
 1.  **Clone the Repository**
     ```sh
-    git clone <your-repository-url>
+    git clone https://github.com/AyushK0204/polling-website.git
     ```
 
 2.  **Backend Setup (`/backend`)**
